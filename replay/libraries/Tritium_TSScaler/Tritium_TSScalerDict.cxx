@@ -139,10 +139,10 @@ namespace {
     static const char* includePaths[] = {
 "/home/me/analyzer/src",
 "/home/me/analyzer/hana_decode",
-"/home/me/tritium/HallA-Online-Tritium/replay/libraries/Tritium_TSScaler",
+"/home/me/local_replay/HallA-Online-Tritium/replay/libraries/Tritium_TSScaler",
 "./Tritium_Xscin",
 "/usr/include/root",
-"/home/me/tritium/HallA-Online-Tritium/replay/libraries/Tritium_TSScaler/",
+"/home/me/local_replay/HallA-Online-Tritium/replay/libraries/Tritium_TSScaler/",
 0
     };
     static const char* fwdDeclCode = R"DICTFWDDCLS(

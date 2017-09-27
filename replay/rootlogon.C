@@ -16,7 +16,7 @@
 {
   //Used for setting paths. %s is necessary so that it can be used to Form the paths.
   //This allows changing the directory in only one place for ease of portability.
-  static const char* replay_dir_prefix = "/adaqfs/home/a-onl/tritium/replay/%s";
+  static const char* replay_dir_prefix = "/home/me/local_replay/HallA-Online-Tritium/replay/%s";
 
   TString Arch(gSystem->GetBuildArch());
   TString Arch32("linux");
@@ -33,7 +33,7 @@
     gSystem->Load(Form(replay_dir_prefix,"libraries/Tritium_Hanjie_Scin/libTriFadcScin.so"));
     gSystem->Load(Form(replay_dir_prefix,"libraries/Tritium_Hanjie_Scin/libTriFadcCherenkov.so"));
     gSystem->Load(Form(replay_dir_prefix,"libraries/Tritium_TSScaler/libTritium_TSScaler.so"));
-    gSystem->Load(Form(replay_dir_prefix,"libraries/Tritium_Evt100/libTritium_THaScalerEvt100Handler.so"));
+    gSystem->Load(Form(replay_dir_prefix,"libraries/Tritium_Evt100/libTritium_THaScaler100EvtHandler.so"));
     gSystem->Load(Form(replay_dir_prefix,"libraries/Tritium_Beam_Eloss/libTritium_Beam_Eloss.so"));
     gSystem->Load(Form(replay_dir_prefix,"libraries/Tritium_Track_Eloss/libTritium_Track_Eloss.so"));
   }
