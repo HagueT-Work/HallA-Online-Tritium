@@ -151,9 +151,9 @@ namespace {
 "/usr/include/root",
 "/home/me/analyzer/src",
 "/home/me/analyzer/hana_decode",
-"/home/me/tritium/HallA-Online-Tritium/replay/libraries/Tritium_Xscin",
+"/home/me/local_replay/HallA-Online-Tritium/replay/libraries/Tritium_Xscin",
 "/usr/include/root",
-"/home/me/tritium/HallA-Online-Tritium/replay/libraries/Tritium_Xscin/",
+"/home/me/local_replay/HallA-Online-Tritium/replay/libraries/Tritium_Xscin/",
 0
     };
     static const char* fwdDeclCode = R"DICTFWDDCLS(

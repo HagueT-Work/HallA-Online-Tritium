@@ -17,6 +17,7 @@ replay/.pcm
 replay/DB/*
 replay/RootFiles
 replay/ScratchRootFiles
+replay/raw
 
 scaler/xscaler
 scaler/hana_scaler/tscalasy

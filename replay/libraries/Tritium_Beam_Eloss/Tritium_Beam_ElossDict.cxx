@@ -140,9 +140,9 @@ namespace {
 "/usr/include/root",
 "/home/me/analyzer/src",
 "/home/me/analyzer/hana_decode",
-"/home/me/tritium/HallA-Online-Tritium/replay/libraries/Tritium_Beam_Eloss",
+"/home/me/local_replay/HallA-Online-Tritium/replay/libraries/Tritium_Beam_Eloss",
 "/usr/include/root",
-"/home/me/tritium/HallA-Online-Tritium/replay/libraries/Tritium_Beam_Eloss/",
+"/home/me/local_replay/HallA-Online-Tritium/replay/libraries/Tritium_Beam_Eloss/",
 0
     };
     static const char* fwdDeclCode = R"DICTFWDDCLS(
