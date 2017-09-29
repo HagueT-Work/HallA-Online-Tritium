@@ -12,7 +12,7 @@
  * - Are we using energy loss classes? Need to be made 1.6 compatible
  */
 
-#include "/home/me/local_replay/HallA-Online-Tritium/replay/def_tritium.h"
+#include "/home/me/tritium/HallA-Online-Tritium/replay/def_tritium.h"
 using namespace std;
 
 #define RIGHT_ARM_CONDITION nrun>=20000
