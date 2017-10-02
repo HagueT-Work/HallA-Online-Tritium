@@ -137,12 +137,12 @@ namespace {
 0
     };
     static const char* includePaths[] = {
-"/usr/include/root",
-"/home/me/analyzer/src",
-"/home/me/analyzer/hana_decode",
-"/home/me/tritium/HallA-Online-Tritium/replay/libraries/Tritium_Track_Eloss",
-"/usr/include/root",
-"/home/me/tritium/HallA-Online-Tritium/replay/libraries/Tritium_Track_Eloss/",
+"/adaqfs/apps/ROOT/pro/include",
+"/adaqfs/home/a-onl/tritium_test/analyzer//src",
+"/adaqfs/home/a-onl/tritium_test/analyzer//hana_decode",
+"/adaqfs/home/a-onl/tritium_test/HallA-Online-Tritium/replay/libraries/Tritium_Track_Eloss",
+"/adaqfs/apps/ROOT/6.08-04/include",
+"/adaqfs/home/a-onl/tritium_test/HallA-Online-Tritium/replay/libraries/Tritium_Track_Eloss/",
 0
     };
     static const char* fwdDeclCode = R"DICTFWDDCLS(

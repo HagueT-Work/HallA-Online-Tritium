@@ -66,7 +66,7 @@ static const char* PATHS[] = {
    0
 };
 
-static const char* RAW_DATA_FORMAT="%s/gmp_%d.dat.%d";
+static const char* RAW_DATA_FORMAT="%s/triton_%d.dat.%d";
 //static const char* RAW_DATA_FORMAT="%s/dvcs14_%d.dat.%d";
 
 static const char* STD_REPLAY_OUTPUT_DIR=Form(REPLAY_DIR_PREFIX,"Rootfiles");
