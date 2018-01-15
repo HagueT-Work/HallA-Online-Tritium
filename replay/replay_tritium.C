@@ -193,7 +193,7 @@ void replay_tritium(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t Qu
     CUTS=Form(REPLAY_DIR_PREFIX,"LHRS.cuts");
     //==================================
     //  Detectors
-    //==================================
+    /*//==================================
     THaHRS *HRSL = new THaHRS("L","Left arm HRS"); //Add vdc,s2...uses s0 for track beta
     HRSL->AutoStandardDetectors(kFALSE);
     gHaApps->Add( HRSL );
@@ -202,7 +202,7 @@ void replay_tritium(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t Qu
     HRSL->AddDetector( new TriFadcCherenkov("cer", "Gas Cherenkov counter" ));
     HRSL->AddDetector( new TriFadcScin("s2", "S2 Scintillator" ));
     HRSL->AddDetector( new THaShower("prl1", "Pre-shower pion rej." ));
-    HRSL->AddDetector( new THaShower("prl2", "Show pion rej." ));
+    HRSL->AddDetector( new THaShower("prl2", "Show pion rej." ));*/
     
     THaHRS* FbusHRSL = new THaHRS("FbusL", "Fastbus LHRS Readout");
     FbusHRSL->AutoStandardDetectors(kFALSE);
@@ -246,8 +246,8 @@ void replay_tritium(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t Qu
       THaIdealBeam* ib = new THaIdealBeam("ib","Ideal beam");
       gHaApps->Add(ib);
 
-      TriFadcRasteredBeam* Lrb = new TriFadcRasteredBeam("Lrb", "Rastered beam to L-HRS");
-      gHaApps->Add(Lrb);
+      //TriFadcRasteredBeam* Lrb = new TriFadcRasteredBeam("Lrb", "Rastered beam to L-HRS");
+      //gHaApps->Add(Lrb);
 
       THaRasteredBeam* FbusLrb = new THaRasteredBeam("FbusLrb", "Fastbus Rastered beam to L-HRS");
       FbusLrb->AddDetector(new THaRaster("Raster2", "Downstream Raster"));
@@ -268,25 +268,25 @@ void replay_tritium(Int_t runnumber=0,Int_t numevents=0,Int_t fstEvt=0,Bool_t Qu
       Double_t mass_H3 = 3.0160492*amu;
       Double_t mass_tg = mass_H3/3.0; //default target 
   
-      THaPhysicsModule *Lgold = new THaGoldenTrack( "L.gold", "HRS-L Golden Track", "L" );
+      THaPhysicsModule *Lgold = new THaGoldenTrack( "L.gold", "HRS-L Golden Track", "FbusL" );
       gHaPhysics->Add(Lgold);
       
       THaPhysicsModule *Lvdceff = new TriVDCeff( "L.vdceff", "Left vdc efficiency");
       gHaPhysics->Add(Lvdceff);
 
-      THaPhysicsModule *EKL = new THaPrimaryKine("EKL","Electron kinematics in HRS-L","L","ib",mass_tg); //Should be same if no beam included in constructor
+      THaPhysicsModule *EKL = new THaPrimaryKine("EKL","Electron kinematics in HRS-L","FbusL","ib",mass_tg); //Should be same if no beam included in constructor
       gHaPhysics->Add(EKL);
 
-      THaPhysicsModule *EKLc = new THaPrimaryKine("EKLc","Corrected Electron kinematics in HRS-L","L","Lrb",mass_tg);
+      THaPhysicsModule *EKLc = new THaPrimaryKine("EKLc","Corrected Electron kinematics in HRS-L","FbusL","FbusLrb",mass_tg);
       gHaPhysics->Add(EKLc);
 
       THaReactionPoint *rpl = new THaReactionPoint("rpl","Reaction vertex for HRS-L","L","FbusLrb");
       gHaPhysics->Add(rpl);
 
-      THaExtTarCor *exL =  new THaExtTarCor("exL","Corrected for extended target, HRS-L","L","rpl");
+      THaExtTarCor *exL =  new THaExtTarCor("exL","Corrected for extended target, HRS-L","FbusL","rpl");
       gHaPhysics->Add(exL);
 
-      THaPhysicsModule *EKLx = new THaPrimaryKine("EKLx","Better Corrected Electron kinematics in HRS-L","exL","Lrb",mass_tg);
+      THaPhysicsModule *EKLx = new THaPrimaryKine("EKLx","Better Corrected Electron kinematics in HRS-L","exL","FbusLrb",mass_tg);
       gHaPhysics->Add(EKLx);
       
       /*if(bEloss){
