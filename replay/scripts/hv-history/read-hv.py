@@ -18,10 +18,10 @@ if len(sys.argv)==2:
   elif sys.argv[1]=='left':
     right_arm = False
   else:
-    print 'The second argument must be \'right\' or \'left\''
+    prfloat 'The second argument must be \'right\' or \'left\''
     sys.exit(1)
 else:
-  print 'Please specify if the code is being run for \'right\' or \'left\''
+  prfloat 'Please specify if the code is being run for \'right\' or \'left\''
   sys.exit(1)
 
 #Read in the run number from the rcRunNumber file
@@ -83,26 +83,65 @@ while i<(run_num+1):
     for line in halog_file:
       if line.startswith('Set HV (V)'):
         if not s0_done:
-          s0.append(int(line.split()[4])+int(line.split()[5])+int(line.split()[6]))
+          s0.append(float(line.split()[4])+float(line.split()[5])+float(line.split()[6]))
           s0_done = True
         elif not s2L_done:
-          s2L1.append(int(line.split()[4])+int(line.split()[5])+int(line.split()[6])+int(line.split()[7])+int(line.split()[8])+int(line.split()[9])+int(line.split()[10])+int(line.split()[11]))
-          s2L2.append(int(line.split()[12])+int(line.split()[13])+int(line.split()[14])+int(line.split()[15])+int(line.split()[16])+int(line.split()[17])+int(line.split()[18])+int(line.split()[19]))
+          s2L1.append(float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11]))
+          s2L2.append(float(line.split()[12])+float(line.split()[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19]))
           s2L_done = True
         elif not s2R_done:
-          s2R1.append(int(line.split()[4])+int(line.split()[5])+int(line.split()[6])+int(line.split()[7])+int(line.split()[8])+int(line.split()[9])+int(line.split()[10])+int(line.split()[11]))
-          s2R2.append(int(line.split()[12])+int(line.split()[13])+int(line.split()[14])+int(line.split()[15])+int(line.split()[16])+int(line.split()[17])+int(line.split()[18])+int(line.split()[19]))
+          s2R1.append(float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11]))
+          s2R2.append(float(line.split()[12])+float(line.split()[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19]))
           s2R_done = True
         elif not gc_done:
-          gc.append(int(line.split()[4])+int(line.split()[5])+int(line.split()[6])+int(line.split()[7])+int(line.split()[8])+int(line.split()[9])+int(line.split()[10])+int(line.split()[11])+int(line.split()[12])+int(line.split()[13]))
+          gc.append(float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11])+float(line.split()[12])+float(line.split()[13]))
           gc_done = True
         if right_arm:
           if not psL_done:
-            psL1.append(int(line.split()[4]+int(line.splits()[5])+int(line.splits()[6])+int(line.splits()[7])+int(line.splits()[8])+int(line.splits()[9])+int(line.splits()[10])+int(line.splits()[11])+int(line.splits()[12])+int(line.splits()[13])+int(line.splits()[14])+int(line.splits()[15])
-            psL1.append(int(line.split()[16]+int(line.splits()[17])+int(line.splits()[18])+int(line.splits()[19])+int(line.splits()[20])+int(line.splits()[21])+int(line.splits()[22])+int(line.splits()[23])+int(line.splits()[24])+int(line.splits()[25])+int(line.splits()[26])+int(line.splits()[27])
+            psL1.append(float(line.split()[4]+float(line.splits()[5])+float(line.splits()[6])+float(line.splits()[7])+float(line.splits()[8])+float(line.splits()[9])+float(line.splits()[10])+float(line.splits()[11])+float(line.splits()[12])+float(line.splits()[13])+float(line.splits()[14])+float(line.splits()[15])
+            psL1.append(float(line.split()[16]+float(line.splits()[17])+float(line.splits()[18])+float(line.splits()[19])+float(line.splits()[20])+float(line.splits()[21])+float(line.splits()[22])+float(line.splits()[23])+float(line.splits()[24])+float(line.splits()[25])+float(line.splits()[26])+float(line.splits()[27])
             psL_done = True
           if not psR_done:
-            psR1.append(int(line.split()[4]+int(line.splits()[5])+int(line.splits()[6])+int(line.splits()[7])+int(line.splits()[8])+int(line.splits()[9])+int(line.splits()[10])+int(line.splits()[11])+int(line.splits()[12])+int(line.splits()[13])+int(line.splits()[14])+int(line.splits()[15])
-            psR1.append(int(line.split()[16]+int(line.splits()[17])+int(line.splits()[18])+int(line.splits()[19])+int(line.splits()[20])+int(line.splits()[21])+int(line.splits()[22])+int(line.splits()[23])+int(line.splits()[24])+int(line.splits()[25])+int(line.splits()[26])+int(line.splits()[27])
+            psR1.append(float(line.split()[4]+float(line.splits()[5])+float(line.splits()[6])+float(line.splits()[7])+float(line.splits()[8])+float(line.splits()[9])+float(line.splits()[10])+float(line.splits()[11])+float(line.splits()[12])+float(line.splits()[13])+float(line.splits()[14])+float(line.splits()[15])
+            psR1.append(float(line.split()[16]+float(line.splits()[17])+float(line.splits()[18])+float(line.splits()[19])+float(line.splits()[20])+float(line.splits()[21])+float(line.splits()[22])+float(line.splits()[23])+float(line.splits()[24])+float(line.splits()[25])+float(line.splits()[26])+float(line.splits()[27])
             psR_done = True
+          if not sh1_done:
+            sh1.append(float(line.split()[4])+float(line.split()[5]))+float(line.split()[6]))+float(line.split()[7]))+float(line.split()[8]))+float(line.split()[9]))+float(line.split()[10]))+float(line.split()[11]))+float(line.split()[12]))+float(line.split()[13]))+float(line.split()[14]))+float(line.split()[15]))+float(line.split()[16]))+float(line.split()[17]))+float(line.split()[18]))
+            sh1_done = True
+          if not sh2_done:
+            sh2.append(float(line.split()[4])+float(line.split()[5]))+float(line.split()[6]))+float(line.split()[7]))+float(line.split()[8]))+float(line.split()[9]))+float(line.split()[10]))+float(line.split()[11]))+float(line.split()[12]))+float(line.split()[13]))+float(line.split()[14]))+float(line.split()[15]))+float(line.split()[16]))+float(line.split()[17]))+float(line.split()[18]))
+            sh2_done = True
+          if not sh3_done:
+            sh3.append(float(line.split()[4])+float(line.split()[5]))+float(line.split()[6]))+float(line.split()[7]))+float(line.split()[8]))+float(line.split()[9]))+float(line.split()[10]))+float(line.split()[11]))+float(line.split()[12]))+float(line.split()[13]))+float(line.split()[14]))+float(line.split()[15]))+float(line.split()[16]))+float(line.split()[17]))+float(line.split()[18]))
+            sh3_done = True
+          if not sh4_done:
+            sh4.append(float(line.split()[4])+float(line.split()[5]))+float(line.split()[6]))+float(line.split()[7]))+float(line.split()[8]))+float(line.split()[9]))+float(line.split()[10]))+float(line.split()[11]))+float(line.split()[12]))+float(line.split()[13]))+float(line.split()[14]))+float(line.split()[15]))+float(line.split()[16]))+float(line.split()[17]))+float(line.split()[18]))
+            sh4_done = True
+          if not sh5_done:
+            sh5.append(float(line.split()[4])+float(line.split()[5]))+float(line.split()[6]))+float(line.split()[7]))+float(line.split()[8]))+float(line.split()[9]))+float(line.split()[10]))+float(line.split()[11]))+float(line.split()[12]))+float(line.split()[13]))+float(line.split()[14]))+float(line.split()[15]))+float(line.split()[16]))+float(line.split()[17]))+float(line.split()[18]))
+            sh5_done = True
+        else:
+          if not prl1L_done:
+            prl1L1.append(float(line.split[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11])+float(line.split()[12])
+            prl1L2.append(float(line.split[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19])+float(line.split()[20]))
+            prl1L_done = True
+          if not prl1R_done:
+            prl1R1.append(float(line.split[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11])+float(line.split()[12])
+            prl1R2.append(float(line.split[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19])+float(line.split()[20]))
+            prl1R_done = True
+          if not prl2L_done:
+            prl2L1.append(float(line.split[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11])+float(line.split()[12])
+            prl2L2.append(float(line.split[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19])+float(line.split()[20]))
+            prl2L_done = True
+          if not prl2R_done:
+            prl2R1.append(float(line.split[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11])+float(line.split()[12])
+            prl2R2.append(float(line.split[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19])+float(line.split()[20]))
+            prl2R_done = True
+        if not vdc_done:
+          VDC.append(float(line.split()[4])+float(line.split()[5])
   i+=1
+
+print run
+print s0
+print s2L1
+print s2R2
