@@ -99,7 +99,7 @@ while i<(int(runnum)+1):
     for line in halog_file:
       if line.startswith('Set HV (V)'):
         if not s0_done:
-          s0.append(float(line.split()[3])+float(line.split()[4])+float(line.split()[5]))
+          s0.append(float(line.split()[3])+float(line.split()[4]))
           s0_done = True
         elif not s2L_done:
           s2L1.append(float(line.split()[3])+float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10]))
@@ -138,20 +138,20 @@ while i<(int(runnum)+1):
             sh5_done = True
         else:
           if not prl1L_done:
-            prl1L1.append(float(line.split[3])+float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11]))
-            prl1L2.append(float(line.split[12])+float(line.split()[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19]))
+            prl1L1.append(float(line.split()[3])+float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11]))
+            prl1L2.append(float(line.split()[12])+float(line.split()[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19]))
             prl1L_done = True
           if not prl1R_done:
-            prl1R1.append(float(line.split[3])+float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11]))
-            prl1R2.append(float(line.split[12])+float(line.split()[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19]))
+            prl1R1.append(float(line.split()[3])+float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11]))
+            prl1R2.append(float(line.split()[12])+float(line.split()[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19]))
             prl1R_done = True
           if not prl2L_done:
-            prl2L1.append(float(line.split[3])+float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11]))
-            prl2L2.append(float(line.split[12])+float(line.split()[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19]))
+            prl2L1.append(float(line.split()[3])+float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11]))
+            prl2L2.append(float(line.split()[12])+float(line.split()[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19]))
             prl2L_done = True
           if not prl2R_done:
-            prl2R1.append(float(line.split[3])+float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11]))
-            prl2R2.append(float(line.split[12])+float(line.split()[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19]))
+            prl2R1.append(float(line.split()[3])+float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11]))
+            prl2R2.append(float(line.split()[12])+float(line.split()[13])+float(line.split()[14])+float(line.split()[15])+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19]))
             prl2R_done = True
         if not vdc_done:
           VDC.append(float(line.split()[3])+float(line.split()[4]))
