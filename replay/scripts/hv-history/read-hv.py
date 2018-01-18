@@ -9,6 +9,7 @@
 ###########################################################
 
 import sys
+import os
 import string
 import subprocess
 
@@ -37,8 +38,10 @@ except IOError:
   runnum = raw_input('The most current run number can\'t be located. What run number would you like to plot to? ')
 
 if right_arm:
+  start_run = 90760
   i=90760
 else:
+  start_run = 1208
   i=1208
 
 run = []
@@ -99,7 +102,7 @@ while i<(int(runnum)+1):
   if found:
     run.append(i)
     for line in halog_file:
-      if line.startswith('Set HV (V)'):
+      if line.startswith('Read HV (V)'):
         if not s0_done:
           s0.append(float(line.split()[3])+float(line.split()[4]))
           s0_done = True
@@ -179,3 +182,219 @@ print run
 print s0
 print s2L1
 print s2R2
+
+#ok. now to create a C file for making plots
+
+try:
+  os.remove("hv_plots.C")
+except OSError:
+  pass
+
+plots = open("hv_plots.C","w+")
+
+plots.write("void hv_plots(){\n")
+
+i = 1
+#Form the arrays
+x = "int x[" + str(len(run)) + "] = {" + str(run[0]) + '\n'
+ars0 = "double s0[" + str(len(run)) + "] = {" + str(s0[0]) + '\n'
+ars2L1 = "double s2L1[" + str(len(run)) + "] = {" + str(s2L1[0]) + '\n'
+ars2L2 = "double s2L2[" + str(len(run)) + "] = {" + str(s2L2[0]) + '\n'
+ars2R1 = "double s2R1[" + str(len(run)) + "] = {" + str(s2R1[0]) + '\n'
+ars2R2 = "double s2R2[" + str(len(run)) + "] = {" + str(s2R2[0]) + '\n'
+argc = "double gc[" + str(len(run)) + "] = {" + str(gc[0]) + '\n'
+arvdc = "double vdc[" + str(len(run)) + "] = {" + str(VDC[0]) + '\n'
+if right_arm:
+  arpsL1 = "double psL1[" + str(len(run)) + "] = {" + str(psL1[0]) + '\n'
+  arpsL2 = "double psL2[" + str(len(run)) + "] = {" + str(psL2[0]) + '\n'
+  arpsR1 = "double psR1[" + str(len(run)) + "] = {" + str(psR1[0]) + '\n'
+  arpsR2 = "double psR2[" + str(len(run)) + "] = {" + str(psR2[0]) + '\n'
+  arsh1 = "double sh1[" + str(len(run)) + "] = {" + str(sh1[0]) + '\n'
+  arsh2 = "double sh2[" + str(len(run)) + "] = {" + str(sh2[0]) + '\n'
+  arsh3 = "double sh3[" + str(len(run)) + "] = {" + str(sh3[0]) + '\n'
+  arsh4 = "double sh4[" + str(len(run)) + "] = {" + str(sh4[0]) + '\n'
+  arsh5 = "double sh5[" + str(len(run)) + "] = {" + str(sh5[0]) + '\n'
+else:
+  arprl1L1 = "double prl1L1[" + str(len(run)) + "] = {" + str(prl1L1[0]) + '\n'
+  arprl1L2 = "double prl1L2[" + str(len(run)) + "] = {" + str(prl1L2[0]) + '\n'
+  arprl1R1 = "double prl1R1[" + str(len(run)) + "] = {" + str(prl1R1[0]) + '\n'
+  arprl1R2 = "double prl1R2[" + str(len(run)) + "] = {" + str(prl1R2[0]) + '\n'
+  arprl2L1 = "double prl2L1[" + str(len(run)) + "] = {" + str(prl2L1[0]) + '\n'
+  arprl2L2 = "double prl2L2[" + str(len(run)) + "] = {" + str(prl2L2[0]) + '\n'
+  arprl2R1 = "double prl2R1[" + str(len(run)) + "] = {" + str(prl2R1[0]) + '\n'
+  arprl2R2 = "double prl2R2[" + str(len(run)) + "] = {" + str(prl2R2[0]) + '\n'
+while i<len(run):
+  x += ", " + str(run[i]) + '\n'
+  ars0 += ", " + str(s0[i]) + '\n'
+  ars2L1 += ", " + str(s2L1[i]) + '\n'
+  ars2L2 += ", " + str(s2L2[i]) + '\n'
+  ars2R1 += ", " + str(s2R1[i]) + '\n'
+  ars2R2 += ", " + str(s2R2[i]) + '\n'
+  argc += ", " + str(gc[i]) + '\n'
+  arvdc += ", " + str(VDC[i]) + '\n'
+#right arm stuff
+  if right_arm:
+    arpsL1 += ", " + str(psL1[i]) + '\n'
+    arpsL2 += ", " + str(psL2[i]) + '\n'
+    arpsR1 += ", " + str(psR1[i]) + '\n'
+    arpsR2 += ", " + str(psR2[i]) + '\n'
+    arsh1 += ", " + str(sh1[i]) + '\n'
+    arsh2 += ", " + str(sh2[i]) + '\n'
+    arsh3 += ", " + str(sh3[i]) + '\n'
+    arsh4 += ", " + str(sh4[i]) + '\n'
+    arsh5 += ", " + str(sh5[i]) + '\n'
+#left arm stuff
+  else:
+    arprl1L1 += ", " + str(prl1L1[i]) + '\n'
+    arprl1L2 += ", " + str(prl1L2[i]) + '\n'
+    arprl1R1 += ", " + str(prl1R1[i]) + '\n'
+    arprl1R2 += ", " + str(prl1R2[i]) + '\n'
+    arprl2L1 += ", " + str(prl2L1[i]) + '\n'
+    arprl2L2 += ", " + str(prl2L2[i]) + '\n'
+    arprl2R1 += ", " + str(prl2R1[i]) + '\n'
+    arprl2R2 += ", " + str(prl2R2[i]) + '\n'
+  i += 1
+x += '};\n'
+ars0 += '};\n'
+ars2L1 += '};\n'
+ars2L2 += '};\n'
+ars2R1 += '};\n'
+ars2R2 += '};\n'
+argc += '};\n'
+arvdc += '};\n'
+#right arm stuff
+if right_arm:
+  arpsL1 += '};\n'
+  arpsL2 += '};\n'
+  arpsR1 += '};\n'
+  arpsR2 += '};\n'
+  arsh1 += '};\n'
+  arsh2 += '};\n'
+  arsh3 += '};\n'
+  arsh4 += '};\n'
+  arsh5 += '};\n'
+#left arm stuff
+else:
+  arprl1L1 += '};\n'
+  arprl1L2 += '};\n'
+  arprl1R1 += '};\n'
+  arprl1R2 += '};\n'
+  arprl2L1 += '};\n'
+  arprl2L2 += '};\n'
+  arprl2R1 += '};\n'
+  arprl2R2 += '};\n'
+
+plots.write("TCanvas* s0gc = new TCanvas(\"s0gc\",\"s0 and gc\");\n")
+plots.write("s0gc->Divide(2,1);\n")
+plots.write("TCanvas* s2c = new TCanvas(\"s2c\",\"s2 Canvas\");\n")
+plots.write("s2c->Divide(2,2);\n")
+plots.write("TCanvas* calo1 = new TCanvas(\"calo1\",\"First Calorimeter\");\n")
+plots.write("TCanvas* calo2 = new TCanvas(\"calo2\",\"Second Calorimeter\");\n")
+plots.write("TCanvas* vdcc = new TCanvas(\"vdcc\",\"VDC Canvas\");\n")
+plots.write(x)
+plots.write(ars0)
+plots.write("TGraph* s0g = new TGraph(" + str(len(run)) + ", x, s0);\n")
+plots.write("s0g->SetTitle(\"s0 HV sum\");\n")
+plots.write("s0gc->cd(1);\ns0g->Draw(\"APL*\");\n")
+plots.write(ars2L1)
+plots.write("TGraph* s2L1g = new TGraph(" + str(len(run)) + ", x, s2L1);\n")
+plots.write("s2L1g->SetTitle(\"s2L First Half HV sum\");\n")
+plots.write("s2c->cd(1);\ns2L1g->Draw(\"APL*\");\n")
+plots.write(ars2L2)
+plots.write("TGraph* s2L2g = new TGraph(" + str(len(run)) + ", x, s2L2);\n")
+plots.write("s2L2g->SetTitle(\"s2L Second Half HV sum\");\n")
+plots.write("s2c->cd(2);\ns2L2g->Draw(\"APL*\");\n")
+plots.write(ars2R1)
+plots.write("TGraph* s2R1g = new TGraph(" + str(len(run)) + ", x, s2R1);\n")
+plots.write("s2R1g->SetTitle(\"s2R First Half HV sum\");\n")
+plots.write("s2c->cd(3);\ns2R1g->Draw(\"APL*\");\n")
+plots.write(ars2R2)
+plots.write("TGraph* s2R2g = new TGraph(" + str(len(run)) + ", x, s2R2);\n")
+plots.write("s2R2g->SetTitle(\"s2R Second Half HV sum\");\n")
+plots.write("s2c->cd(4);\ns2R2g->Draw(\"APL*\");\n")
+plots.write(argc)
+plots.write("TGraph* gcg = new TGraph(" + str(len(run)) + ", x, gc);\n")
+plots.write("gcg->SetTitle(\"gc HV sum\");\n")
+plots.write("s0gc->cd(2);\ngcg->Draw(\"APL*\");\n")
+#right arm stuff
+if right_arm:
+  plots.write("calo1->Divide(2,2);\n")
+  plots.write("calo2->Divide(2,3);\n")
+  plots.write(arpsL1)
+  plots.write("TGraph* psL1g = new TGraph(" + str(len(run)) + ", x, psL1);\n")
+  plots.write("psL1g->SetTitle(\"Preshower Left First Half HV sum\");\n")
+  plots.write("calo1->cd(1);\npsL1g->Draw(\"APL*\");\n")
+  plots.write(rpsL2)
+  plots.write("TGraph* psL2g = new TGraph(" + str(len(run)) + ", x, psL2);\n")
+  plots.write("psL2g->SetTitle(\"Preshower Left Second Half HV sum\");\n")
+  plots.write("calo1->cd(2);\npsL2g->Draw(\"APL*\");\n")
+  plots.write(arpsR1)
+  plots.write("TGraph* psR1g = new TGraph(" + str(len(run)) + ", x, psR1);\n")
+  plots.write("psR1g->SetTitle(\"Preshower Right First Half HV sum\");\n")
+  plots.write("calo1->cd(3);\npsR1g->Draw(\"APL*\");\n")
+  plots.write(arpsR2)
+  plots.write("TGraph* psR2g = new TGraph(" + str(len(run)) + ", x, psR2);\n")
+  plots.write("psR2g->SetTitle(\"Preshower Right Second Half HV sum\");\n")
+  plots.write("calo1->cd(4);\npsR2g->Draw(\"APL*\");\n")
+  plots.write(arsh1)
+  plots.write("TGraph* sh1g = new TGraph(" + str(len(run)) + ", x, sh1);\n")
+  plots.write("sh1g->SetTitle(\"Shower Row 1 HV sum\");\n")
+  plots.write("calo2->cd(1);\nsh1g->Draw(\"APL*\");")
+  plots.write(arsh2)
+  plots.write("TGraph* sh2g = new TGraph(" + str(len(run)) + ", x, sh2);\n")
+  plots.write("sh2g->SetTitle(\"Shower Row 2 HV sum\");\n")
+  plots.write("calo2->cd(2);\nsh2g->Draw(\"APL*\");")
+  plots.write(arsh3)
+  plots.write("TGraph* sh3g = new TGraph(" + str(len(run)) + ", x, sh3);\n")
+  plots.write("sh3g->SetTitle(\"Shower Row 3 HV sum\");\n")
+  plots.write("calo2->cd(3);\nsh3g->Draw(\"APL*\");")
+  plots.write(arsh4)
+  plots.write("TGraph* sh4g = new TGraph(" + str(len(run)) + ", x, sh4);\n")
+  plots.write("sh4g->SetTitle(\"Shower Row 4 HV sum\");\n")
+  plots.write("calo2->cd(4);\nsh4g->Draw(\"APL*\");")
+  plots.write(arsh5)
+  plots.write("TGraph* sh5g = new TGraph(" + str(len(run)) + ", x, sh5);\n")
+  plots.write("sh5g->SetTitle(\"Shower Row 5 HV sum\");\n")
+  plots.write("calo2->cd(5);\nsh5g->Draw(\"APL*\");")
+#left arm stuff
+else:
+  plots.write("calo1->Divide(2,2);")
+  plots.write("calo2->Divide(2,2);")
+  plots.write(arprl1L1)
+  plots.write("TGraph* prl1L1g = new TGraph(" + str(len(run)) + ", x, prl1L1);\n")
+  plots.write("prl1L1g->SetTitle(\"Pion Rejector 1 Left First Half HV sum\");\n")
+  plots.write("calo1->cd(1);\nprl1L1g->Draw(\"APL*\");\n")
+  plots.write(arprl1L2)
+  plots.write("TGraph* prl1L2g = new TGraph(" + str(len(run)) + ", x, prl1L2);\n")
+  plots.write("prl1L2g->SetTitle(\"Pion Rejector 1 Left Second Half sum\");\n")
+  plots.write("calo1->cd(2);\nprl1L2g->Draw(\"APL*\");\n")
+  plots.write(arprl1R1)
+  plots.write("TGraph* prl1R1g = new TGraph(" + str(len(run)) + ", x, prl1R1);\n")
+  plots.write("prl1R2g->SetTitle(\"Pion Rejector 1 Right First Half HV sum\");\n")
+  plots.write("calo1->cd(3);\nprl1R1g->Draw(\"APL*\");\n")
+  plots.write(arprl1R2)
+  plots.write("TGraph* prl1R2g = new TGraph(" + str(len(run)) + ", x, prl1R2);\n")
+  plots.write("prl1R2g->SetTitle(\"Pion Rejector 1 Right Second Half HV sum\");\n")
+  plots.write("calo1->cd(4);\nprl1R2g->Draw(\"APL*\");\n")
+  plots.write(arprl2L1)
+  plots.write("TGraph* prl2L1g = new TGraph(" + str(len(run)) + ", x, prl2L1);\n")
+  plots.write("prl2L1g->SetTitle(\"Pion Rejector 2 Left First Half HV sum\");\n")
+  plots.write("calo2->cd(1);\nprl2L1g->Draw(\"APL*\");\n")
+  plots.write(arprl2L2)
+  plots.write("TGraph* prl2L2g = new TGraph(" + str(len(run)) + ", x, prl2L2);\n")
+  plots.write("prl2L2g->SetTitle(\"Pion Rejector 2 Left Second Half HV sum\");\n")
+  plots.write("calo2->cd(2);\nprl2L2g->Draw(\"APL*\");\n")
+  plots.write(arprl2R1)
+  plots.write("TGraph* prl2R1g = new TGraph(" + str(len(run)) + ", x, prl2R1);\n")
+  plots.write("prl2R1g->SetTitle(\"Pion Rejector 2 Right First Half HV sum\");\n")
+  plots.write("calo2->cd(3);\nprl2R1g->Draw(\"APL*\");\n")
+  plots.write(arprl2R2)
+  plots.write("TGraph* prl2R2g = new TGraph(" + str(len(run)) + ", x, prl2R2);\n")
+  plots.write("prl2R2g->SetTitle(\"Pion Rejector 2 Right Second Half HV sum\");\n")
+  plots.write("calo2->cd(4);\nprl2R2g->Draw(\"APL*\");\n")
+plots.write(arvdc)
+plots.write("TGraph* vdcg = new TGraph(" + str(len(run)) + ", x, vdc);\n")
+plots.write("vdcg->SetTitle(\"VDC HV sum\");\n")
+plots.write("vdcc->cd(0);\nvdcg->Draw(\"APL*\");\n")
+plots.write("}\n")
+plots.close()
