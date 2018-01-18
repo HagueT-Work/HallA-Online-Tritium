@@ -98,12 +98,12 @@ while i<(run_num+1):
           gc_done = True
         if right_arm:
           if not psL_done:
-            psL1.append(float(line.split()[3]+float(line.splits()[4])+float(line.splits()[5])+float(line.splits()[6])+float(line.splits()[7])+float(line.splits()[8])+float(line.splits()[9])+float(line.splits()[10])+float(line.splits()[11])+float(line.splits()[12])+float(line.splits()[13])+float(line.splits()[14])
-            psL1.append(float(line.split()[15]+float(line.splits()[16])+float(line.splits()[17])+float(line.splits()[18])+float(line.splits()[19])+float(line.splits()[20])+float(line.splits()[21])+float(line.splits()[22])+float(line.splits()[23])+float(line.splits()[24])+float(line.splits()[25])+float(line.splits()[26])
+            psL1.append(float(line.split()[3]+float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11])+float(line.split()[12])+float(line.split()[13])+float(line.split()[14])
+            psL1.append(float(line.split()[15]+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19])+float(line.split()[20])+float(line.split()[21])+float(line.split()[22])+float(line.split()[23])+float(line.split()[24])+float(line.split()[25])+float(line.split()[26])
             psL_done = True
           if not psR_done:
-            psR1.append(float(line.split()[3]+float(line.splits()[4])+float(line.splits()[5])+float(line.splits()[6])+float(line.splits()[7])+float(line.splits()[8])+float(line.splits()[9])+float(line.splits()[10])+float(line.splits()[11])+float(line.splits()[12])+float(line.splits()[13])+float(line.splits()[14])
-            psR1.append(float(line.split()[15]+float(line.splits()[16])+float(line.splits()[17])+float(line.splits()[18])+float(line.splits()[19])+float(line.splits()[20])+float(line.splits()[21])+float(line.splits()[22])+float(line.splits()[23])+float(line.splits()[24])+float(line.splits()[25])+float(line.splits()[26])
+            psR1.append(float(line.split()[3]+float(line.split()[4])+float(line.split()[5])+float(line.split()[6])+float(line.split()[7])+float(line.split()[8])+float(line.split()[9])+float(line.split()[10])+float(line.split()[11])+float(line.split()[12])+float(line.split()[13])+float(line.split()[14])
+            psR1.append(float(line.split()[15]+float(line.split()[16])+float(line.split()[17])+float(line.split()[18])+float(line.split()[19])+float(line.split()[20])+float(line.split()[21])+float(line.split()[22])+float(line.split()[23])+float(line.split()[24])+float(line.split()[25])+float(line.split()[26])
             psR_done = True
           if not sh1_done:
             sh1.append(float(line.split()[3])+float(line.split()[4]))+float(line.split()[5]))+float(line.split()[6]))+float(line.split()[7]))+float(line.split()[8]))+float(line.split()[9]))+float(line.split()[10]))+float(line.split()[11]))+float(line.split()[12]))+float(line.split()[13]))+float(line.split()[14]))+float(line.split()[15]))+float(line.split()[16]))+float(line.split()[17]))
