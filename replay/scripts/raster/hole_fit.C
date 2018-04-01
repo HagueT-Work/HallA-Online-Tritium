@@ -7,6 +7,12 @@
 * 23 March 2018 - Created
 */
 
+
+#define RIGHT_ARM_CONDITION run>=90000
+#define LEFT_ARM_CONDITION run<90000
+
+#include "TString.h"
+
 void hole_fit(){
   Int_t run = 0;
   cout << "What run number would you like to calibrate with?    ";
@@ -46,30 +52,46 @@ void hole_fit(){
   }else if(LEFT_ARM_CONDITION){
     arm="Lrb";
   }
+  //Define cuts
+
+  TString cut = "(TMath::Abs(" + arm + ".BPMA.x)<100)&&((ev";
+  if(RIGHT_ARM_CONDITION){
+    cut += "Right";
+  }else if(LEFT_ARM_CONDITION){
+    cut += "Left";
+  }
+  cut += "dnew_r*0.0003299)>10)";
+  cut += "&&(";
+  if(RIGHT_ARM_CONDITION){
+    cut += "R";
+  }else if(LEFT_ARM_CONDITION){
+    cut += "L";
+  }
+  cut += ".tr.n==1)";
 
   //Define the fits and the plots
 
-  TF2 *ell_fit = new TF2("ell_fit","[0]*((([1]*([2]-x))^2 + ([3]*([4]-y))^2) > 2 ? 0 : 1 )",45000,95000,20000,120000);
+  TF2 *ell_fit = new TF2("ell_fit","[0]*((([1]*([2]-x))^2 + ([3]*([4]-y))^2) > 2 ? .15 : 1 )",45000,95000,20000,120000);
 
-  Double_t param[5] = {40,0.00008,72500,0.00003,80000};
+  Double_t param[5] = {25,0.00008,72500,0.00003,80000};
   ell_fit->SetParameters(param);
   
-  TF2 *ell_fit2 = new TF2("ell_fit2","[0]*((([1]*([2]-x))^2 + ([3]*([4]-y))^2) > 2 ? 0 : 1 )",45000,95000,20000,120000);
+  TF2 *ell_fit2 = new TF2("ell_fit2","[0]*((([1]*([2]-x))^2 + ([3]*([4]-y))^2) > 1 ? .15 : 1 )",45000,95000,20000,120000);
 
-  Double_t param2[5] = {40,0.00008,72500,0.00003,80000};
+  Double_t param2[5] = {25,0.00008,72500,0.00003,80000};
   ell_fit2->SetParameters(param2);
 
-  TH2F *R1 = new TH2F("R1","Raster 1 Carbon Hole",5000,45000,95000,10000,20000,120000);
-  TH2F *R2 = new TH2F("R2","Raster 2 Carbon Hole",5000,45000,95000,10000,20000,120000);
+  TH2F *R1 = new TH2F("R1","Raster 1 Carbon Hole",50,45000,95000,100,20000,120000);
+  TH2F *R2 = new TH2F("R2","Raster 2 Carbon Hole",50,45000,95000,100,20000,120000);
 
   TCanvas *c1 = new TCanvas();
   TCanvas *c2 = new TCanvas();
   c1->cd(0);
-  T->Draw(arm + ".Raster.rawcur.y:" + arm + ".Raster.rawcur.x>>R1",cut,"colz");
+  rootfile->Draw(arm + ".Raster.rawcur.y:" + arm + ".Raster.rawcur.x>>R1",TCut(cut),"colz");
   R1->Fit(ell_fit);
-  ell_fit->Draw("cont1 same");
+  //ell_fit->Draw("cont1 same");
   c2->cd(0);
-  T->Draw(arm + ".Raster2.rawcur.y:" + arm + ".Raster2.rawcur.x>>R2",cut,"colz");
+  rootfile->Draw(arm + ".Raster2.rawcur.y:" + arm + ".Raster2.rawcur.x>>R2",TCut(cut),"colz");
   R2->Fit(ell_fit2);
-  ell_fit2->Draw("cont1 same");
+  //ell_fit2->Draw("cont1 same");
 }
