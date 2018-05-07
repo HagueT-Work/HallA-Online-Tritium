@@ -68,21 +68,35 @@ void hole_fit(){
     cut += "L";
   }
   cut += ".tr.n==1)";
+  cut += "&&(";
+  if(RIGHT_ARM_CONDITION){
+    cut += "R";
+  }else if(LEFT_ARM_CONDITION){
+    cut += "L";
+  }
+  cut += ".cer.asum_c)>2000";
+  cut += "&&(abs(";
+  if(RIGHT_ARM_CONDITION){
+    cut += "R";
+  }else if(LEFT_ARM_CONDITION){
+    cut += "L";
+  }
+  cut += ".tr.vz)<0.01)";
 
   //Define the fits and the plots
 
-  TF2 *ell_fit = new TF2("ell_fit","[0]*((([1]*([2]-x))^2 + ([3]*([4]-y))^2) > 2 ? .15 : 1 )",45000,95000,20000,120000);
+  TF2 *ell_fit = new TF2("ell_fit","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",45000,95000,20000,120000);
 
-  Double_t param[5] = {25,0.00008,72500,0.00003,80000};
+  Double_t param[6] = {25,0.00008,72500,0.00003,80000, 1.};
   ell_fit->SetParameters(param);
   
-  TF2 *ell_fit2 = new TF2("ell_fit2","[0]*((([1]*([2]-x))^2 + ([3]*([4]-y))^2) > 1 ? .15 : 1 )",45000,95000,20000,120000);
+  TF2 *ell_fit2 = new TF2("ell_fit2","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",45000,95000,20000,120000);
 
-  Double_t param2[5] = {25,0.00008,72500,0.00003,80000};
+  Double_t param2[6] = {25,0.00008,72500,0.00003,80000, 1.};
   ell_fit2->SetParameters(param2);
 
-  TH2F *R1 = new TH2F("R1","Raster 1 Carbon Hole",50,45000,95000,100,20000,120000);
-  TH2F *R2 = new TH2F("R2","Raster 2 Carbon Hole",50,45000,95000,100,20000,120000);
+  TH2F *R1 = new TH2F("R1","Raster 1 Carbon Hole",25,45000,95000,50,20000,120000);
+  TH2F *R2 = new TH2F("R2","Raster 2 Carbon Hole",25,45000,95000,50,20000,120000);
 
   TCanvas *c1 = new TCanvas();
   TCanvas *c2 = new TCanvas();
