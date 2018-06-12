@@ -13,7 +13,7 @@
 
 #include "TString.h"
 
-void hole_fit(){
+void heaviside_hole_fit(){
   Int_t run = 0;
   cout << "What run number would you like to calibrate with?    ";
   cin >> run;
@@ -85,39 +85,27 @@ void hole_fit(){
 
   //Define the fits and the plots
 
-  TF2 *ell_fit = new TF2("ell_fit","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",60000,87000,40000,114000);
-
-  Double_t param[6] = {25,0.00008,72500,0.00003,80000, 1.};
-  ell_fit->SetParameters(param);
-  ell_fit->SetParLimits(0,10,50);
-  ell_fit->SetParLimits(1,.00006,.0001);
-  ell_fit->SetParLimits(2,70000,75000);
-  ell_fit->SetParLimits(3,.00001,.00005);
-  ell_fit->SetParLimits(4,70000,85000);
-  ell_fit->SetParLimits(5,.5,10);
-  
-  TF2 *ell_fit2 = new TF2("ell_fit2","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",45000,95000,20000,120000);
-
-  Double_t param2[6] = {25,0.00008,72500,0.00003,80000, 1.};
-  ell_fit2->SetParameters(param2);
-  ell_fit2->SetParLimits(0,10,50);
-  ell_fit2->SetParLimits(1,.00006,.0001);
-  ell_fit2->SetParLimits(2,70000,75000);
-  ell_fit2->SetParLimits(3,.00001,.00005);
-  ell_fit2->SetParLimits(4,70000,85000);
-  ell_fit2->SetParLimits(5,.5,10);
-
-  TH2F *R1 = new TH2F("R1","Raster 1 Carbon Hole",25,45000,95000,50,20000,120000);
+  TH2F *R1 = new TH2F("R1","Raster 1 Carbon Hole",50,45000,95000,100,20000,120000);
   TH2F *R2 = new TH2F("R2","Raster 2 Carbon Hole",25,45000,95000,50,20000,120000);
 
   TCanvas *c1 = new TCanvas();
   TCanvas *c2 = new TCanvas();
   c1->cd(0);
   rootfile->Draw(arm + ".Raster.rawcur.y:" + arm + ".Raster.rawcur.x>>R1",TCut(cut),"colz");
-  R1->Fit(ell_fit);
   //ell_fit->Draw("cont1 same");
   c2->cd(0);
   rootfile->Draw(arm + ".Raster2.rawcur.y:" + arm + ".Raster2.rawcur.x>>R2",TCut(cut),"colz");
-  R2->Fit(ell_fit2);
   //ell_fit2->Draw("cont1 same");
+
+  TF2 *ell_fit = new TF2("ell_fit","[0]*((([1]*([2]-x))^2 + ([3]*([4]-y))^2) > 2 ? 0 : 1 ) + [5]",57000,87000,37000,110000);
+
+  Double_t param[6] = {25,0.00008,72500,0.00003,80000, 1.};
+  ell_fit->SetParameters(param);
+  R1->Fit(ell_fit);
+  
+  TF2 *ell_fit2 = new TF2("ell_fit2","[0]*((([1]*([2]-x))^2 + ([3]*([4]-y))^2) > 1 ? 0 : 1 ) + [5]",R2->FindFirstBinAbove(0,1),R2->FindLastBinAbove(0,1),R2->FindFirstBinAbove(0,2),R2->FindLastBinAbove(0,2));
+
+  Double_t param2[6] = {25,0.00008,72500,0.00003,80000, 1.};
+  ell_fit2->SetParameters(param2);
+  R2->Fit(ell_fit2);
 }
