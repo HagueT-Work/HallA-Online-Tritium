@@ -120,4 +120,8 @@ void hole_fit(){
   rootfile->Draw(arm + ".Raster2.rawcur.y:" + arm + ".Raster2.rawcur.x>>R2",TCut(cut),"colz");
   R2->Fit(ell_fit2);
   //ell_fit2->Draw("cont1 same");
+  
+  cout << arm << ".Raster.raw2posT = " << ell_fit->GetParameter(2)*-1.*kx*ell_fit->GetParameter(1)/1000. << " " << ell_fit->GetParameter(4)*-1.*ky*ell_fit->GetParameter(3)/1000. << " " << ell_fit->GetParameter(1)*kx/1000. << " " << ell_fit->GetParameter(3)*ky/1000. << " 0.0 0.0" << endl;
+
+  cout << arm << ".Raster2.raw2posT = " << ell_fit2->GetParameter(2)*-1.*kx*ell_fit2->GetParameter(1)/1000. << " " << ell_fit2->GetParameter(4)*-1.*ky*ell_fit2->GetParameter(3)/1000. << " " << ell_fit2->GetParameter(1)*kx/1000. << " " << ell_fit2->GetParameter(3)*ky/1000. << " 0.0 0.0" << endl;
 }
