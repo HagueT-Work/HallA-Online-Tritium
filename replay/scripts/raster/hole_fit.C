@@ -32,16 +32,16 @@ void hole_fit(){
 
   int i = 1;
 
-  if(!gSystem->AccessPathName(TString::Format("/chafs1/work1/tritium/tmp_data/tritium_%d.root",run),kFileExists)){
-    rootfile->Add(TString::Format("/chafs1/work1/tritium/tmp_data/tritium_%d.root",run));
+  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/pass1_calibration/kin1/tritium_%d.root",run),kFileExists)){
+    rootfile->Add(TString::Format("/cache/halla/triton/prod/pass1_calibration/kin1/tritium_%d.root",run));
     cout << "Added file: tritium_" << run << ".root" << endl;
   }else{
     cout << "Requested run has not been replayed. Exiting." << endl << endl;
     return;
   }
 
-  while(!gSystem->AccessPathName(TString::Format("/chafs1/work1/tritium/tmp_data/tritium_%d_%d.root",run,i),kFileExists)){
-    rootfile->Add(TString::Format("/chafs1/work1/tritium/tmp_data/tritium_%d_%d.root",run,i));
+  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/pass1_calibration/kin1/tritium_%d_%d.root",run,i),kFileExists)){
+    rootfile->Add(TString::Format("/cache/halla/triton/prod/pass1_calibration/kin1/tritium_%d_%d.root",run,i));
     cout << "Added file: tritium_" << run << "_" << i << ".root" << endl;
     i=i+1;
   }                      
