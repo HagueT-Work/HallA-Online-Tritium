@@ -32,16 +32,16 @@ void hole_fit(){
 
   int i = 1;
 
-  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/pass1_calibration/kin1/tritium_%d.root",run),kFileExists)){
-    rootfile->Add(TString::Format("/cache/halla/triton/prod/pass1_calibration/kin1/tritium_%d.root",run));
+  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin1/tritium_%d.root",run),kFileExists)){
+    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin1/tritium_%d.root",run));
     cout << "Added file: tritium_" << run << ".root" << endl;
   }else{
     cout << "Requested run has not been replayed. Exiting." << endl << endl;
     return;
   }
 
-  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/pass1_calibration/kin1/tritium_%d_%d.root",run,i),kFileExists)){
-    rootfile->Add(TString::Format("/cache/halla/triton/prod/pass1_calibration/kin1/tritium_%d_%d.root",run,i));
+  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin1/tritium_%d_%d.root",run,i),kFileExists)){
+    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin1/tritium_%d_%d.root",run,i));
     cout << "Added file: tritium_" << run << "_" << i << ".root" << endl;
     i=i+1;
   }                      
@@ -60,7 +60,7 @@ void hole_fit(){
   }else if(LEFT_ARM_CONDITION){
     cut += "Left";
   }
-  cut += "dnew_r*0.0003299)>10)";
+  cut += "dnew_r*0.0003299)>4.5)";
   cut += "&&(";
   if(RIGHT_ARM_CONDITION){
     cut += "R";
@@ -91,7 +91,7 @@ void hole_fit(){
   ell_fit->SetParameters(param);
   ell_fit->SetParLimits(0,10,50);
   ell_fit->SetParLimits(1,.00006,.0001);
-  ell_fit->SetParLimits(2,70000,75000);
+  ell_fit->SetParLimits(2,65000,75000);
   ell_fit->SetParLimits(3,.00001,.00005);
   ell_fit->SetParLimits(4,70000,85000);
   ell_fit->SetParLimits(5,.5,10);
@@ -102,7 +102,7 @@ void hole_fit(){
   ell_fit2->SetParameters(param2);
   ell_fit2->SetParLimits(0,10,50);
   ell_fit2->SetParLimits(1,.00006,.0001);
-  ell_fit2->SetParLimits(2,70000,75000);
+  ell_fit2->SetParLimits(2,65000,75000);
   ell_fit2->SetParLimits(3,.00001,.00005);
   ell_fit2->SetParLimits(4,70000,85000);
   ell_fit2->SetParLimits(5,.5,10);
