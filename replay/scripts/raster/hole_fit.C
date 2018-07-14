@@ -13,11 +13,13 @@
 
 #include "TString.h"
 
-void hole_fit(){
-  Int_t run = 0;
-  cout << "What run number would you like to calibrate with?    ";
-  cin >> run;
-  cout << endl << endl;
+void hole_fit(Int_t r1=0, Int_t r2=0){
+  Int_t run = r1;
+  if(run==0){
+    cout << "What run number would you like to calibrate with?    ";
+    cin >> run;
+    cout << endl << endl;
+  }
   if(run<=0){
     cout << "Invalid run number. Exiting." << endl << endl;
     return;
@@ -32,16 +34,16 @@ void hole_fit(){
 
   int i = 1;
 
-  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin1/tritium_%d.root",run),kFileExists)){
-    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin1/tritium_%d.root",run));
+  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d.root",run),kFileExists)){
+    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d.root",run));
     cout << "Added file: tritium_" << run << ".root" << endl;
   }else{
     cout << "Requested run has not been replayed. Exiting." << endl << endl;
     return;
   }
 
-  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin1/tritium_%d_%d.root",run,i),kFileExists)){
-    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin1/tritium_%d_%d.root",run,i));
+  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d_%d.root",run,i),kFileExists)){
+    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d_%d.root",run,i));
     cout << "Added file: tritium_" << run << "_" << i << ".root" << endl;
     i=i+1;
   }                      
@@ -60,7 +62,7 @@ void hole_fit(){
   }else if(LEFT_ARM_CONDITION){
     cut += "Left";
   }
-  cut += "dnew_r*0.0003299)>4.5)";
+  cut += "dnew_r*0.0003299)>9.5)";
   cut += "&&(";
   if(RIGHT_ARM_CONDITION){
     cut += "R";
@@ -85,7 +87,7 @@ void hole_fit(){
 
   //Define the fits and the plots
 
-  TF2 *ell_fit = new TF2("ell_fit","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",60000,87000,40000,114000);
+  TF2 *ell_fit = new TF2("ell_fit","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",54000,90000,38000,112000);
 
   Double_t param[6] = {25,0.00008,72500,0.00003,80000, 1.};
   ell_fit->SetParameters(param);
@@ -96,19 +98,19 @@ void hole_fit(){
   ell_fit->SetParLimits(4,70000,85000);
   ell_fit->SetParLimits(5,.5,10);
   
-  TF2 *ell_fit2 = new TF2("ell_fit2","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",45000,95000,20000,120000);
+  TF2 *ell_fit2 = new TF2("ell_fit2","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",55000,88000,30000,112000);
 
-  Double_t param2[6] = {25,0.00008,72500,0.00003,80000, 1.};
+  Double_t param2[6] = {25,0.00008,72500,0.00003,72500, 1.};
   ell_fit2->SetParameters(param2);
   ell_fit2->SetParLimits(0,3,50);
-  ell_fit2->SetParLimits(1,.00006,.0001);
+  ell_fit2->SetParLimits(1,.00004,.0001);
   ell_fit2->SetParLimits(2,65000,75000);
   ell_fit2->SetParLimits(3,.00001,.00005);
-  ell_fit2->SetParLimits(4,70000,85000);
+  ell_fit2->SetParLimits(4,70000,80000);
   ell_fit2->SetParLimits(5,.5,10);
 
-  TH2F *R1 = new TH2F("R1","Raster 1 Carbon Hole",70,45000,95000,50,20000,120000);
-  TH2F *R2 = new TH2F("R2","Raster 2 Carbon Hole",70,45000,95000,50,20000,120000);
+  TH2F *R1 = new TH2F("R1","Raster 1 Carbon Hole",30,45000,95000,50,20000,120000);
+  TH2F *R2 = new TH2F("R2","Raster 2 Carbon Hole",41,45000,95000,44,20000,120000);
 
   TCanvas *c1 = new TCanvas();
   TCanvas *c2 = new TCanvas();
@@ -133,10 +135,12 @@ void hole_fit(){
   //heating affects. Alternatively, the clock trigger can be used.
   //***************************************************************************
 
-  Int_t run2 = 0;
-  cout << "What run number would you like to calibrate with?    ";
-  cin >> run2;
-  cout << endl << endl;
+  Int_t run2 = r2;
+  if(run2==0){
+    cout << "What run number would you like to calibrate with?    ";
+    cin >> run2;
+    cout << endl << endl;
+  }
   if(run2<=0){
     cout << "Invalid run number. Exiting." << endl << endl;
     return;
@@ -146,16 +150,16 @@ void hole_fit(){
 
   int j = 1;
 
-  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin1/tritium_%d.root",run2),kFileExists)){
-    foilrun->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin1/tritium_%d.root",run2));
+  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d.root",run2),kFileExists)){
+    foilrun->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d.root",run2));
     cout << "Added file: tritium_" << run2 << ".root" << endl;
   }else{
     cout << "Requested run has not been replayed. Exiting." << endl << endl;
     return;
   }
 
-  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin1/tritium_%d_%d.root",run2,j),kFileExists)){
-    foilrun->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin1/tritium_%d_%d.root",run2,j));
+  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d_%d.root",run2,j),kFileExists)){
+    foilrun->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d_%d.root",run2,j));
     cout << "Added file: tritium_" << run2 << "_" << j << ".root" << endl;
     j=j+1;
   }                      
@@ -186,11 +190,11 @@ void hole_fit(){
     clock = "DL.evtypebits>>8&1";
   }
   if(RIGHT_ARM_CONDITION){
-    clock += "&&evRight";
+    clock += "evRight";
   }else if(LEFT_ARM_CONDITION){
-    cut += "&&evLeft";
+    cut += "evLeft";
   }
-  cut += "dnew_r*0.0003299)>18)";
+  cut += "dnew_r*0.0003299)>19)";
 
   //Draw the histograms
   //It is easy to ge the mean when put into a histogram

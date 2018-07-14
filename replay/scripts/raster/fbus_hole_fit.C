@@ -5,6 +5,7 @@
 * 
 * Changelog:
 * 23 March 2018 - Created
+* 12 July 2018  - Updated the position calibration. Mean raster is now mapped to mean BPM.
 */
 
 
@@ -13,11 +14,13 @@
 
 #include "TString.h"
 
-void hole_fit(){
-  Int_t run = 0;
-  cout << "What run number would you like to calibrate with?    ";
-  cin >> run;
-  cout << endl << endl;
+void fbus_hole_fit(Int_t r1=0, Int_t r2=0){
+  Int_t run = r1;
+  if(run==0){
+    cout << "What run number would you like to calibrate with?    ";
+    cin >> run;
+    cout << endl << endl;
+  }
   if(run<=0){
     cout << "Invalid run number. Exiting." << endl << endl;
     return;
@@ -87,28 +90,28 @@ void hole_fit(){
 
   TF2 *ell_fit = new TF2("ell_fit","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",3400,5750,2200,6600);
 
-  Double_t param[6] = {25,0.00008,72500,0.00003,80000, 1.};
+  Double_t param[6] = {25,0.00095,4500,0.001,4750, 1.};
   ell_fit->SetParameters(param);
   ell_fit->SetParLimits(0,3,50);
-  ell_fit->SetParLimits(1,.00006,.0001);
-  ell_fit->SetParLimits(2,65000,75000);
-  ell_fit->SetParLimits(3,.00001,.00005);
-  ell_fit->SetParLimits(4,70000,85000);
+  ell_fit->SetParLimits(1,.0001,.002);
+  ell_fit->SetParLimits(2,4250,4750);
+  ell_fit->SetParLimits(3,.0001,.002);
+  ell_fit->SetParLimits(4,4000,5500);
   ell_fit->SetParLimits(5,.5,10);
   
   TF2 *ell_fit2 = new TF2("ell_fit2","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",3400,5500,2000,6800);
 
-  Double_t param2[6] = {25,0.00008,72500,0.00003,80000, 1.};
+  Double_t param2[6] = {25,0.001,4500,0.001,4750, 1.};
   ell_fit2->SetParameters(param2);
   ell_fit2->SetParLimits(0,3,50);
-  ell_fit2->SetParLimits(1,.00004,.0001);
-  ell_fit2->SetParLimits(2,65000,75000);
-  ell_fit2->SetParLimits(3,.00001,.00005);
-  ell_fit2->SetParLimits(4,70000,85000);
+  ell_fit2->SetParLimits(1,.0001,.002);
+  ell_fit2->SetParLimits(2,4250,4750);
+  ell_fit2->SetParLimits(3,.0001,.002);
+  ell_fit2->SetParLimits(4,4000,5500);
   ell_fit2->SetParLimits(5,.5,10);
 
-  TH2F *R1 = new TH2F("R1","Raster 1 Carbon Hole",30,3000,6000,50,2000,7000);
-  TH2F *R2 = new TH2F("R2","Raster 2 Carbon Hole",36,3000,6000,40,1700,7000);
+  TH2F *R1 = new TH2F("R1","Raster 1 Carbon Hole",26,3000,6000,47,1500,7500);
+  TH2F *R2 = new TH2F("R2","Raster 2 Carbon Hole",33,3000,6000,55,1500,7500);
 
   TCanvas *c1 = new TCanvas();
   TCanvas *c2 = new TCanvas();
@@ -133,10 +136,12 @@ void hole_fit(){
   //heating affects. Alternatively, the clock trigger can be used.
   //***************************************************************************
 
-  Int_t run2 = 0;
-  cout << "What run number would you like to calibrate with?    ";
-  cin >> run2;
-  cout << endl << endl;
+  Int_t run2 = r2;
+  if(run2 == 0){
+    cout << "What run number would you like to calibrate with?    ";
+    cin >> run2;
+    cout << endl << endl;
+  }
   if(run2<=0){
     cout << "Invalid run number. Exiting." << endl << endl;
     return;
@@ -167,9 +172,9 @@ void hole_fit(){
 
   //Plot X and Y Currents for both Rasters
   TH1F *r1xcurr = new TH1F("r1xcurr", "Raster 1-X Current vs ADC Channel", 1000, 3000, 6000);
-  TH1F *r1ycurr = new TH1F("r1ycurr", "Raster 1-Y Current vs ADC Channel", 1000, 1500, 7000);
+  TH1F *r1ycurr = new TH1F("r1ycurr", "Raster 1-Y Current vs ADC Channel", 1000, 1500, 7500);
   TH1F *r2xcurr = new TH1F("r2xcurr", "Raster 2-X Current vs ADC Channel", 1000, 3000, 6000);
-  TH1F *r2ycurr = new TH1F("r2ycurr", "Raster 2-Y Current vs ADC Channel", 1000, 1500, 7000);
+  TH1F *r2ycurr = new TH1F("r2ycurr", "Raster 2-Y Current vs ADC Channel", 1000, 1500, 7500);
   
   //Plot X and Y Position at the Target
   TH1F *targxpos = new TH1F("targxpos", "Target X Position from BPMs (m)", 400, -0.02, 0.02);
