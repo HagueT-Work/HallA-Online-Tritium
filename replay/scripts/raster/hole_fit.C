@@ -183,35 +183,36 @@ void hole_fit(Int_t r1=0, Int_t r2=0){
   meanC->Divide(2,3);
 
   //Using clock trigger cut
-  TCut clock;
+  TString clock;
   if(RIGHT_ARM_CONDITION){
-    clock = "DR.evtypebits>>8&1";
+    clock = "(DR.evtypebits>>8&1)";
   }else if(LEFT_ARM_CONDITION){
-    clock = "DL.evtypebits>>8&1";
+    clock = "(DL.evtypebits>>8&1)";
   }
   if(RIGHT_ARM_CONDITION){
-    clock += "evRight";
+    clock += "&&(evRight";
   }else if(LEFT_ARM_CONDITION){
-    cut += "evLeft";
+    clock += "&&(evLeft";
   }
-  cut += "dnew_r*0.0003299)>19)";
+  clock += "dnew_r*0.0003299)>19";
+  //clock += "
 
   //Draw the histograms
   //It is easy to ge the mean when put into a histogram
   //The plots should also be checked to ensure that the entire spectra is
   //included in the plot. If not, the means will be thrown off.
   meanC->cd(1);
-  foilrun->Draw(arm+".Raster.rawcur.x>>r1xcurr",clock); 
+  foilrun->Draw(arm+".Raster.rawcur.x>>r1xcurr",TCut(clock)); 
   meanC->cd(2);
-  foilrun->Draw(arm+".Raster.rawcur.y>>r1ycurr",clock);
+  foilrun->Draw(arm+".Raster.rawcur.y>>r1ycurr",TCut(clock));
   meanC->cd(3);
-  foilrun->Draw(arm+".Raster2.rawcur.x>>r2xcurr",clock);
+  foilrun->Draw(arm+".Raster2.rawcur.x>>r2xcurr",TCut(clock));
   meanC->cd(4);
-  foilrun->Draw(arm+".Raster2.rawcur.y>>r2ycurr",clock);
+  foilrun->Draw(arm+".Raster2.rawcur.y>>r2ycurr",TCut(clock));
   meanC->cd(5);
-  foilrun->Draw(targx_string + ">>targxpos",clock);
+  foilrun->Draw(targx_string + ">>targxpos",TCut(clock));
   meanC->cd(6);
-  foilrun->Draw(targy_string + ">>targypos",clock);
+  foilrun->Draw(targy_string + ">>targypos",TCut(clock));
 
   Double_t r1xm, r1ym, r2xm, r2ym, txm, tym;
   r1xm = r1xcurr->GetMean();
