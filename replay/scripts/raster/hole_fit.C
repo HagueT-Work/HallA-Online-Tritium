@@ -34,16 +34,16 @@ void hole_fit(Int_t r1=0, Int_t r2=0){
 
   int i = 1;
 
-  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d.root",run),kFileExists)){
-    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d.root",run));
+  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d.root",run),kFileExists)){
+    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d.root",run));
     cout << "Added file: tritium_" << run << ".root" << endl;
   }else{
     cout << "Requested run has not been replayed. Exiting." << endl << endl;
     return;
   }
 
-  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d_%d.root",run,i),kFileExists)){
-    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d_%d.root",run,i));
+  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d_%d.root",run,i),kFileExists)){
+    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d_%d.root",run,i));
     cout << "Added file: tritium_" << run << "_" << i << ".root" << endl;
     i=i+1;
   }                      
@@ -62,7 +62,7 @@ void hole_fit(Int_t r1=0, Int_t r2=0){
   }else if(LEFT_ARM_CONDITION){
     cut += "Left";
   }
-  cut += "dnew_r*0.0003299)>9.5)";
+  cut += "dnew_r*0.0003299)>19)";
   cut += "&&(";
   if(RIGHT_ARM_CONDITION){
     cut += "R";
@@ -87,30 +87,30 @@ void hole_fit(Int_t r1=0, Int_t r2=0){
 
   //Define the fits and the plots
 
-  TF2 *ell_fit = new TF2("ell_fit","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",54000,90000,38000,112000);
+  TF2 *ell_fit = new TF2("ell_fit","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",53000,89000,32000,115000);
 
-  Double_t param[6] = {25,0.00008,72500,0.00003,80000, 1.};
+  Double_t param[6] = {25,0.000066,70000,0.000027,65000, 1.};
   ell_fit->SetParameters(param);
-  ell_fit->SetParLimits(0,3,50);
+  ell_fit->SetParLimits(0,3,250);
   ell_fit->SetParLimits(1,.00006,.0001);
   ell_fit->SetParLimits(2,65000,75000);
   ell_fit->SetParLimits(3,.00001,.00005);
-  ell_fit->SetParLimits(4,70000,85000);
+  ell_fit->SetParLimits(4,60000,75000);
   ell_fit->SetParLimits(5,.5,10);
   
-  TF2 *ell_fit2 = new TF2("ell_fit2","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",55000,88000,30000,112000);
+  TF2 *ell_fit2 = new TF2("ell_fit2","[0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))",53000,92000,30000,110000);
 
-  Double_t param2[6] = {25,0.00008,72500,0.00003,72500, 1.};
+  Double_t param2[6] = {25,0.000064,70000,0.000023,65000, 1.};
   ell_fit2->SetParameters(param2);
-  ell_fit2->SetParLimits(0,3,50);
-  ell_fit2->SetParLimits(1,.00004,.0001);
+  ell_fit2->SetParLimits(0,3,250);
+  ell_fit2->SetParLimits(1,.00005,.0001);
   ell_fit2->SetParLimits(2,65000,75000);
-  ell_fit2->SetParLimits(3,.00001,.00005);
-  ell_fit2->SetParLimits(4,70000,80000);
+  ell_fit2->SetParLimits(3,.000015,.00005);
+  ell_fit2->SetParLimits(4,60000,75000);
   ell_fit2->SetParLimits(5,.5,10);
 
-  TH2F *R1 = new TH2F("R1","Raster 1 Carbon Hole",30,45000,95000,50,20000,120000);
-  TH2F *R2 = new TH2F("R2","Raster 2 Carbon Hole",41,45000,95000,44,20000,120000);
+  TH2F *R1 = new TH2F("R1","Raster 1 Carbon Hole",31,45000,95000,49,20000,120000);
+  TH2F *R2 = new TH2F("R2","Raster 2 Carbon Hole",35,45000,95000,47,20000,120000);
 
   TCanvas *c1 = new TCanvas();
   TCanvas *c2 = new TCanvas();
@@ -150,16 +150,16 @@ void hole_fit(Int_t r1=0, Int_t r2=0){
 
   int j = 1;
 
-  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d.root",run2),kFileExists)){
-    foilrun->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d.root",run2));
+  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d.root",run2),kFileExists)){
+    foilrun->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d.root",run2));
     cout << "Added file: tritium_" << run2 << ".root" << endl;
   }else{
     cout << "Requested run has not been replayed. Exiting." << endl << endl;
     return;
   }
 
-  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d_%d.root",run2,j),kFileExists)){
-    foilrun->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d_%d.root",run2,j));
+  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d_%d.root",run2,j),kFileExists)){
+    foilrun->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d_%d.root",run2,j));
     cout << "Added file: tritium_" << run2 << "_" << j << ".root" << endl;
     j=j+1;
   }                      
@@ -189,13 +189,13 @@ void hole_fit(Int_t r1=0, Int_t r2=0){
   }else if(LEFT_ARM_CONDITION){
     clock = "(DL.evtypebits>>8&1)";
   }
+  clock += "&&";
   if(RIGHT_ARM_CONDITION){
-    clock += "&&(evRight";
+    clock += "(Right";
   }else if(LEFT_ARM_CONDITION){
-    clock += "&&(evLeft";
+    clock += "(Left";
   }
-  clock += "dnew_r*0.0003299)>19";
-  //clock += "
+  clock += "BCM.current_dnew)>20";
 
   //Draw the histograms
   //It is easy to ge the mean when put into a histogram
@@ -214,17 +214,73 @@ void hole_fit(Int_t r1=0, Int_t r2=0){
   meanC->cd(6);
   foilrun->Draw(targy_string + ">>targypos",TCut(clock));
 
-  Double_t r1xm, r1ym, r2xm, r2ym, txm, tym;
+  Double_t r1xm, r1xrms, r1ym, r1yrms, r2xm, r2xrms, r2ym, r2yrms, txm, tym;
   r1xm = r1xcurr->GetMean();
+  r1xrms = r1xcurr->GetRMS();
   r1ym = r1ycurr->GetMean();
+  r1yrms = r1ycurr->GetRMS();
   r2xm = r2xcurr->GetMean();
+  r2xrms = r2xcurr->GetRMS();
   r2ym = r2ycurr->GetMean();
+  r2yrms = r2ycurr->GetRMS();
   txm = targxpos->GetMean();
   tym = targypos->GetMean();
 
-  //cout << std::setprecision(9) << r1xm << " " << r1ym << " " << r2xm << " " << r2ym << endl << endl; 
- 
-  cout << arm << ".Raster.raw2posT = " << txm-r1xm*kx*ell_fit->GetParameter(1)/1000. << " " << tym-r1ym*ky*ell_fit->GetParameter(3)/1000. << " " << ell_fit->GetParameter(1)*kx/1000. << " " << ell_fit->GetParameter(3)*ky/1000. << " 0.0 0.0" << endl;
+  //Plot X and Y Position for both BPMs
+  TH1F *bpmaxpos = new TH1F("bpmaxpos", "BPM A-X Position (m)", 400, -0.02, 0.02);
+  TH1F *bpmaypos = new TH1F("bpmaypos", "BPM A-Y Position (m)", 400, -0.02, 0.02);
+  TH1F *bpmbxpos = new TH1F("bpmbxpos", "BPM B-X Position (m)", 400, -0.02, 0.02);
+  TH1F *bpmbypos = new TH1F("bpmbypos", "BPM B-Y Position (m)", 400, -0.02, 0.02);
 
+  TCanvas *position_canvas = new TCanvas("position_canvas");
+  position_canvas->Divide(2,2);
+
+  position_canvas->cd(1);
+  foilrun->Draw(arm + ".BPMA.x>>bpmaxpos",TCut(clock));
+  Double_t bpmaxm = bpmaxpos->GetMean();
+  Double_t bpmaxrms = bpmaxpos->GetRMS();
+
+  position_canvas->cd(2);
+  foilrun->Draw(arm + ".BPMA.y>>bpmaypos",TCut(clock));
+  Double_t bpmaym = bpmaypos->GetMean();
+  Double_t bpmayrms = bpmaypos->GetRMS();
+
+  position_canvas->cd(3);
+  foilrun->Draw(arm + ".BPMB.x>>bpmbxpos",TCut(clock));
+  Double_t bpmbxm = bpmbxpos->GetMean();
+  Double_t bpmbxrms = bpmbxpos->GetRMS();
+
+  position_canvas->cd(4);
+  foilrun->Draw(arm + ".BPMB.y>>bpmbypos",TCut(clock));
+  Double_t bpmbym = bpmbypos->GetMean();
+  Double_t bpmbyrms = bpmbypos->GetRMS();
+
+  //Calculate Calibrations at BPMs
+  Double_t UbpmAx_offset = bpmaxm - ((r1xm*bpmaxrms)/(r1xrms*kx));
+  Double_t UbpmAx_slope = bpmaxrms/(r1xrms*kx);
+  Double_t UbpmAy_offset = bpmaym - ((r1ym*bpmayrms)/(r1yrms*ky));
+  Double_t UbpmAy_slope = bpmayrms/(r1yrms*ky);
+
+  Double_t UbpmBx_offset = bpmbxm - ((r1xm*bpmbxrms)/(r1xrms*kx));
+  Double_t UbpmBx_slope = bpmbxrms/(r1xrms*kx);
+  Double_t UbpmBy_offset = bpmbym - ((r1ym*bpmbyrms)/(r1yrms*ky));
+  Double_t UbpmBy_slope = bpmbyrms/(r1yrms*ky);
+
+  Double_t DbpmAx_offset = bpmaxm - ((r2xm*bpmaxrms)/(r2xrms*kx));
+  Double_t DbpmAx_slope = bpmaxrms/(r2xrms*kx);
+  Double_t DbpmAy_offset = bpmaym - ((r2ym*bpmayrms)/(r2yrms*ky));
+  Double_t DbpmAy_slope = bpmayrms/(r2yrms*ky);
+
+  Double_t DbpmBx_offset = bpmbxm - ((r2xm*bpmbxrms)/(r2xrms*kx));
+  Double_t DbpmBx_slope = bpmbxrms/(r2xrms*kx);
+  Double_t DbpmBy_offset = bpmbym - ((r2ym*bpmbyrms)/(r2yrms*ky));
+  Double_t DbpmBy_slope = bpmbyrms/(r2yrms*ky);
+
+  cout << arm << ".Raster.raw2posA = " << UbpmAx_offset << " " << UbpmAy_offset << " " << UbpmAx_slope << " " << UbpmAy_slope << " 0.0 0.0" << endl; 
+  cout << arm << ".Raster.raw2posB = " << UbpmBx_offset << " " << UbpmBy_offset << " " << UbpmBx_slope << " " << UbpmBy_slope << " 0.0 0.0" << endl; 
+  cout << arm << ".Raster.raw2posT = " << txm-r1xm*kx*ell_fit->GetParameter(1)/1000. << " " << tym-r1ym*ky*ell_fit->GetParameter(3)/1000. << " " << ell_fit->GetParameter(1)*kx/1000. << " " << ell_fit->GetParameter(3)*ky/1000. << " 0.0 0.0" << endl << endl;
+
+  cout << arm << ".Raster2.raw2posA = " << DbpmAx_offset << " " << DbpmAy_offset << " " << DbpmAx_slope << " " << DbpmAy_slope << " 0.0 0.0" << endl; 
+  cout << arm << ".Raster2.raw2posB = " << DbpmBx_offset << " " << DbpmBy_offset << " " << DbpmBx_slope << " " << DbpmBy_slope << " 0.0 0.0" << endl; 
   cout << arm << ".Raster2.raw2posT = " << txm-r2xm*kx*ell_fit2->GetParameter(1)/1000. << " " << tym-r2ym*ky*ell_fit2->GetParameter(3)/1000. << " " << ell_fit2->GetParameter(1)*kx/1000. << " " << ell_fit2->GetParameter(3)*ky/1000. << " 0.0 0.0" << endl;
 }
