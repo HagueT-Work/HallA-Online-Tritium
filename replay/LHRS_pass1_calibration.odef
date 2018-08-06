@@ -250,5 +250,7 @@ begin epics
   HacL_D_LS450:FLD_DATA
   HacL_D1_LS450:SIG
   HacL_D1_LS450:SIGLCK
+  HacL_D1_NMR:SIG
+  HacL_D1_NMR:SIGLCK
 
 end epics
