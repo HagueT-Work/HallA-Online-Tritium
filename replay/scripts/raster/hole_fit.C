@@ -13,7 +13,7 @@
 
 #include "TString.h"
 
-void hole_fit(Int_t r1=0, Int_t r2=0, Double_t x_true=0.){
+void hole_fit(Int_t r1=0, Int_t r2=0, Double_t r2_current=0, Double_t x_true=0.){
   Int_t run = r1;
   if(run==0){
     cout << "What run number would you like to calibrate with?    ";
@@ -34,16 +34,16 @@ void hole_fit(Int_t r1=0, Int_t r2=0, Double_t x_true=0.){
 
   int i = 1;
 
-  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d.root",run),kFileExists)){
-    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d.root",run));
+  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d.root",run),kFileExists)){
+    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d.root",run));
     cout << "Added file: tritium_" << run << ".root" << endl;
   }else{
     cout << "Requested run has not been replayed. Exiting." << endl << endl;
     return;
   }
 
-  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d_%d.root",run,i),kFileExists)){
-    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin2/tritium_%d_%d.root",run,i));
+  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d_%d.root",run,i),kFileExists)){
+    rootfile->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d_%d.root",run,i));
     cout << "Added file: tritium_" << run << "_" << i << ".root" << endl;
     i=i+1;
   }                      
@@ -87,7 +87,7 @@ void hole_fit(Int_t r1=0, Int_t r2=0, Double_t x_true=0.){
 
   //Define the fits and the plots
 
-  TF2 *ell_fit = new TF2("ell_fit","([0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))) + [6]",54000,90000,38000,112000);
+  TF2 *ell_fit = new TF2("ell_fit","([0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))) + [6]",53000,89000,32000,115000);
 
   Double_t param[7] = {25,0.000066,70000,0.000027,65000, 1., 1.};
   ell_fit->SetParameters(param);
@@ -95,11 +95,11 @@ void hole_fit(Int_t r1=0, Int_t r2=0, Double_t x_true=0.){
   ell_fit->SetParLimits(1,.00006,.0001);
   ell_fit->SetParLimits(2,65000,80000);
   ell_fit->SetParLimits(3,.00001,.00005);
-  ell_fit->SetParLimits(4,60000,80000);
+  ell_fit->SetParLimits(4,55000,80000);
   ell_fit->SetParLimits(5,.5,10);
   ell_fit->SetParLimits(6,0,250);
   
-  TF2 *ell_fit2 = new TF2("ell_fit2","([0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))) + [6]",55000,88000,30000,112000);
+  TF2 *ell_fit2 = new TF2("ell_fit2","([0]/(1. + exp(-1. * [5] * ((([1]*([2]-x))^2 + ([3]*([4]-y))^2)-1.)))) + [6]",53000,92000,30000,110000);
 
   Double_t param2[7] = {25,0.000064,70000,0.000023,65000, 1., 1.};
   ell_fit2->SetParameters(param2);
@@ -176,16 +176,16 @@ void hole_fit(Int_t r1=0, Int_t r2=0, Double_t x_true=0.){
 
   int j = 1;
 
-  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin9/tritium_%d.root",run2),kFileExists)){
-    foilrun->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin9/tritium_%d.root",run2));
+  if(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d.root",run2),kFileExists)){
+    foilrun->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d.root",run2));
     cout << "Added file: tritium_" << run2 << ".root" << endl;
   }else{
     cout << "Requested run has not been replayed. Exiting." << endl << endl;
     return;
   }
 
-  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin9/tritium_%d_%d.root",run2,j),kFileExists)){
-    foilrun->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin9/tritium_%d_%d.root",run2,j));
+  while(!gSystem->AccessPathName(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d_%d.root",run2,j),kFileExists)){
+    foilrun->Add(TString::Format("/cache/halla/triton/prod/marathon/pass1_calibration/kin16/tritium_%d_%d.root",run2,j));
     cout << "Added file: tritium_" << run2 << "_" << j << ".root" << endl;
     j=j+1;
   }                      
@@ -210,18 +210,19 @@ void hole_fit(Int_t r1=0, Int_t r2=0, Double_t x_true=0.){
 
   //Using clock trigger cut
   TString clock;
-  if(RIGHT_ARM_CONDITION){
+  /*if(RIGHT_ARM_CONDITION){
     clock = "(DR.evtypebits>>8&1)";
   }else if(LEFT_ARM_CONDITION){
     clock = "(DL.evtypebits>>8&1)";
   }
-  clock += "&&";
+  clock += "&&";*/
   if(RIGHT_ARM_CONDITION){
     clock += "(Right";
   }else if(LEFT_ARM_CONDITION){
     clock += "(Left";
   }
-  clock += "BCM.current_dnew)>20";
+  clock += "BCM.current_dnew)>";
+  clock += r2_current;
 
   //Draw the histograms
   //It is easy to ge the mean when put into a histogram
